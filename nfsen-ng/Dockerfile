@@ -1,9 +1,12 @@
-FROM php:7.4-apache
+FROM php:7.4-apache-bullseye
 
 MAINTAINER Konrad Roziewski <kroziewski@gmail.com>
 
 WORKDIR /var/www/html
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y pkg-config nfdump rrdtool librrd-dev git
+
+RUN apt-get update \
+    && apt-get install -y pkg-config nfdump rrdtool librrd-dev git
+
 RUN a2enmod rewrite deflate headers expires
 RUN pecl install rrd
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
