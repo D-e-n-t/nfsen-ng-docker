@@ -5,7 +5,7 @@ cp /tmp/sources.conf /tmp/sources.set
 cat /tmp/sources.set | while read ln; do
     command=""
     read -r host port protocol <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1)}')
-    mkdir -p /data/live/$host && command="${protocol}fcapd -I $host -l /data/live/$host  -w -S 1 -T all -p $port -e -z"
+    mkdir -p /data/live/$host && command="${protocol}fcapd -I $host -w /data/live/$host  -S 1 -T all -p $port -e -z"
     if [ -z "$command" ]; then 
         echo >&2 "Error creating directory /data/live/$host"
         exit 1
@@ -25,7 +25,7 @@ while true; do
     sleep 60; 
     cat /tmp/sources.set | while read ln; do
         read -r host port protocol <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1)}')
-        command="${protocol}fcapd -I $host -l /data/live/$host  -w -S 1 -T all -p $port -e -z"
+        command="${protocol}fcapd -I $host -w /data/live/$host  -S 1 -T all -p $port -e -z"
         ps aux| grep '\s'$host'\s' > /dev/null || { echo >&2 "Missing process for $host (port $port)"; exit 1; }
     done
     if [ $? -ne 0 ]; then 

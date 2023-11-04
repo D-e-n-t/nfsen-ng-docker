@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:12
 
 RUN apt-get update -y \
     && apt-get install -y nfdump nfdump-sflow procps \
