@@ -4,8 +4,9 @@ MAINTAINER Konrad Roziewski <kroziewski@gmail.com>
 
 WORKDIR /var/www/html
 
-RUN apt-get update \
-    && apt-get install -y pkg-config nfdump rrdtool librrd-dev git
+RUN apt-get update -y \
+    && apt-get install -y pkg-config nfdump rrdtool librrd-dev git \
+    && apt-get clean -y
 
 RUN a2enmod rewrite deflate headers expires
 RUN pecl install rrd

@@ -1,7 +1,8 @@
 FROM debian:11
 
-RUN apt-get update \
-    && apt-get install -y nfdump nfdump-sflow procps
+RUN apt-get update -y \
+    && apt-get install -y nfdump nfdump-sflow procps \
+    && apt-get clean -y
 
 WORKDIR /app
 COPY entrypoint.sh .
