@@ -11,7 +11,9 @@ This fork runs all services in a single container, mainly so that it runs proper
 
 ## Installation on the Cisco 9300 platform (DNA Advantage license required)
 Notes: the Cisco 9300 switches use host networking and will ignore ports.
-       The switch must have an SSD installed to use non-Cisco packages.  This package is not signed.
+  The switch must have an SSD installed to use non-Cisco packages.  
+  This package is not signed and makes no warranty of fitness for any purpose.
+  This package writes a fair amount of data any may prematurely wear the SSD.
 
 1. Complete the installation above on a Linux host running docker.
 2. Save the image locally: "docker save | gzip | c93knfsen-ng.tar.gz"
