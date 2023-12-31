@@ -49,7 +49,7 @@ This fork runs all services in a single container, mainly so that it runs proper
 5. Start the container: ```app-hosting start appid nfsen```
 6. Access via a web browser (http://IP/) or access the container: ```app-hosting connect appid nfsen session /bin/bash```
 **Note**: it will take 5 mins or so for the rrds to get generated and the inteface to be error free.
-      The config above allocates 512 units of CPU time (2 vcpus), 192MB of RAM and 4GB of storage.  Adjust as needed.
+      The config above allocates 768 units of CPU time (2 vcpus), 256MB of RAM and 4GB of storage.  Adjust as needed.
 ```
 	    iox
 	    app-hosting appid nfsen
