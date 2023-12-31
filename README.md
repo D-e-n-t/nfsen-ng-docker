@@ -35,8 +35,8 @@ This fork runs all services in a single container, mainly so that it runs proper
 2. docker-compose up -d
 3. browse to http://localhost:81
   
-  **Notes**:  By default, nfsen-ng will track ports 22, 80, 53 and 443.  To change this, modify the **INTERESTING_PORTS** environment variable.  
-  By default, Samplicator will use the incoming port from sample.conf and nfdump will increment the port by 100 and listen locally for the replicated feed.  If you could exceed 100 sources, increase the environment variable **MIRROR_PORT_OFFSET** to a higher value  
+  **Notes**:  By default, nfsen-ng will track ports _22, 80, 53 and 443_.  To change this, modify the **INTERESTING_PORTS** environment variable.  
+  By default, Samplicator will use the incoming port from sample.conf and nfdump will increment the port by _100_ and listen locally for the replicated feed.  If you could exceed 100 sources, increase the environment variable **MIRROR_PORT_OFFSET** to a higher value  
   Both nfdump and Samplicated run as root.  This may present a security risk.  
   Additonally, you may add/remove lines in sources.conf... you need then to restart the stack by issuing 'docker-compose restart'  
 
