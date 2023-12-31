@@ -41,24 +41,24 @@ Notes: the Cisco 9300 switches use host networking and will ignore ports.
 2. Customize the sources.conf file (per above) and copy it to the switch
 3. Copy the sources.conf file to the container: "app-hosting data appid nfsen copy usbflash1:sources.conf /sources.conf "
 4. Configure the environment for the container - add something similar to your switch config:
-    iox
-    app-hosting appid nfsen
-     app-vnic AppGigabitEthernet trunk
-      vlan _<Container VLAN ID>_ guest-interface 0
-     app-vnic management guest-interface 0
-      guest-ipaddress _<IP Address>_ netmask _<Netmask>_
-     app-default-gateway _<Default Gateway>_ guest-interface 0
-     name-server0 _<DNS Server>_
-     app-resource docker
-      run-opts 1 " --restart unless-stopped -v $(APP_DATA)/data:/data"
-      run-opts 2 "-v $(APP_DATA)/sources.conf:/tmp/sources.conf:ro"
-      run-opts 3 "-u 0 --entrypoint '/bin/bash /app/entrypoint.sh'"
-     app-resource profile custom
-      cpu 512
-      memory 192
-      persist-disk 4096
-      vcpu 2
-    end
+	    iox
+	    app-hosting appid nfsen
+	     app-vnic AppGigabitEthernet trunk
+	      vlan _<Container VLAN ID>_ guest-interface 0
+	     app-vnic management guest-interface 0
+	      guest-ipaddress _<IP Address>_ netmask _<Netmask>_
+	     app-default-gateway _<Default Gateway>_ guest-interface 0
+	     name-server0 _<DNS Server>_
+	     app-resource docker
+	      run-opts 1 " --restart unless-stopped -v $(APP_DATA)/data:/data"
+	      run-opts 2 "-v $(APP_DATA)/sources.conf:/tmp/sources.conf:ro"
+	      run-opts 3 "-u 0 --entrypoint '/bin/bash /app/entrypoint.sh'"
+	     app-resource profile custom
+	      cpu 512
+	      memory 192
+	      persist-disk 4096
+	      vcpu 2
+	    end
 Note: only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management on the back of the switch)
 5. Start the container: "app-hosting start appid nfsen"
 6. Access via a web browser (http://IP/) or access the container: "app-hosting connect appid nfsen session /bin/bash"
