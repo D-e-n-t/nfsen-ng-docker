@@ -10,7 +10,7 @@ This fork runs all services in a single container, mainly so that it runs proper
 2. verify ports, environment variables and paths in docker-compose.yaml
 
 ## Installation on the Cisco 9300 platform (DNA Advantage license required)
-Notes: the Cisco 9300 switches use host networking and will ignore ports.  
+**Notes:** the Cisco 9300 switches use host networking and will ignore ports.  
   The switch must have an SSD installed to use non-Cisco packages.  
   This package is not signed and makes no warranty of fitness for any purpose.  
   This package writes a fair amount of data any may prematurely wear the SSD.  
@@ -34,8 +34,8 @@ Notes: the Cisco 9300 switches use host networking and will ignore ports.
         - mirror_port is the port on the mirror_host (that should receive the flow records)
 2. docker-compose up -d
 3. browse to http://localhost:81
-
-  Notes:  By default, nfsen-ng will track ports 22, 80, 53 and 443.  To change this, modify the **INTERESTING_PORTS** environment variable.  
+  
+  **Notes**:  By default, nfsen-ng will track ports 22, 80, 53 and 443.  To change this, modify the **INTERESTING_PORTS** environment variable.  
   By default, Samplicator will use the incoming port from sample.conf and nfdump will increment the port by 100 and listen locally for the replicated feed.  If you could exceed 100 sources, increase the environment variable **MIRROR_PORT_OFFSET** to a higher value  
   Both nfdump and Samplicated run as root.  This may present a security risk.  
   Additonally, you may add/remove lines in sources.conf... you need then to restart the stack by issuing 'docker-compose restart'  
@@ -48,7 +48,7 @@ Notes: the Cisco 9300 switches use host networking and will ignore ports.
 4. Configure the environment for the container - see code below.
 5. Start the container: ```app-hosting start appid nfsen```
 6. Access via a web browser (http://IP/) or access the container: ```app-hosting connect appid nfsen session /bin/bash```
-Note: it will take 5 mins or so for the rrds to get generated and the inteface to be error free.
+**Note**: it will take 5 mins or so for the rrds to get generated and the inteface to be error free.
       The config above allocates 512 units of CPU time (2 vcpus), 192MB of RAM and 4GB of storage.  Adjust as needed.
 ```
 	    iox
