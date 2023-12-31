@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  samplicator-nfdump:
+    build: nfdump-nfsen-ng
+    environment:
+    - INTERESTING_PORTS="22, 80, 53, 443"
+    - MIRROR_PORT_OFFSET=100
+    ports:
+    - 81:80
+    - 9100-9150:9000-9050/udp
+    volumes:
+    - ./data:/data
+    - ./sources.conf:/tmp/sources.conf:ro
+    restart: unless-stopped
+    
