@@ -45,7 +45,7 @@ Notes: the Cisco 9300 switches use host networking and will ignore ports.
 6. Access via a web browser (http://IP/) or access the container: "app-hosting connect appid nfsen session /bin/bash"
 Note: it will take 5 mins or so for the rrds to get generated and the inteface to be error free.
       The config above allocates 512 units of CPU time (2 vcpus), 192MB of RAM and 4GB of storage.  Adjust as needed.
-```ios:highlight={2,4-6}
+```
 	    iox
 	    app-hosting appid nfsen
 	     app-vnic AppGigabitEthernet trunk
