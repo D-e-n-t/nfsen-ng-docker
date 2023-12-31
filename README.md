@@ -28,7 +28,7 @@ This fork runs all services in a single container, mainly so that it runs proper
       optionally add a mirror host and port: "device;port;proto;mirror_host;mirror_port"
     - where:
         - device is a display name like 'my-awesome-router'
-        - port is a uniq value in-between 9000-9099
+        - port is a unique value in-between 9000-9050 (this is the container port, the host port will be 9100-9150 using the compose defaults)
         - proto is sflow or nflow depending on your device capabilities)
         - mirror_host is another host that should also receive the flow records
         - mirror_port is the port on the mirror_host (that should receive the flow records)
