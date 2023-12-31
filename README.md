@@ -10,16 +10,16 @@ This fork runs all services in a single container, mainly so that it runs proper
 2. verify ports, environment variables and paths in docker-compose.yaml
 
 ## Installation on the Cisco 9300 platform (DNA Advantage license required)
-Notes: the Cisco 9300 switches use host networking and will ignore ports.
+Notes: the Cisco 9300 switches use host networking and will ignore ports.  
   The switch must have an SSD installed to use non-Cisco packages.  
-  This package is not signed and makes no warranty of fitness for any purpose.
-  This package writes a fair amount of data any may prematurely wear the SSD.
+  This package is not signed and makes no warranty of fitness for any purpose.  
+  This package writes a fair amount of data any may prematurely wear the SSD.  
 
 1. Complete the installation above on a Linux host running docker.
-2. Save the image locally: "docker save | gzip | c93knfsen-ng.tar.gz"
+2. Save the image locally: ```docker save | gzip | c93knfsen-ng.tar.gz```
 3. Copy the image to your switch.
-4. Install the image: "app-hosting install appid nfsen package usbflash1:c9knfsen-ng.tar.gz"
-5. After the image has been installed (check, this can take a while), activate it: "app-hosting activate appid nfsen"
+4. Install the image: ```app-hosting install appid nfsen package usbflash1:c9knfsen-ng.tar.gz```
+5. After the image has been installed (check, this can take a while), activate it: ```app-hosting activate appid nfsen```
 
 ## Usage
 
@@ -41,10 +41,10 @@ Notes: the Cisco 9300 switches use host networking and will ignore ports.
 
 1. Install and Activate the image per above.
 2. Customize the sources.conf file (per above) and copy it to the switch
-3. Copy the sources.conf file to the container: "app-hosting data appid nfsen copy usbflash1:sources.conf /sources.conf "
+3. Copy the sources.conf file to the container: ```app-hosting data appid nfsen copy usbflash1:sources.conf /sources.conf```
 4. Configure the environment for the container - see code below.
-5. Start the container: "app-hosting start appid nfsen"
-6. Access via a web browser (http://IP/) or access the container: "app-hosting connect appid nfsen session /bin/bash"
+5. Start the container: ```app-hosting start appid nfsen```
+6. Access via a web browser (http://IP/) or access the container: ```app-hosting connect appid nfsen session /bin/bash```
 Note: it will take 5 mins or so for the rrds to get generated and the inteface to be error free.
       The config above allocates 512 units of CPU time (2 vcpus), 192MB of RAM and 4GB of storage.  Adjust as needed.
 ```
