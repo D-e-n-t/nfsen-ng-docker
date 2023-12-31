@@ -64,14 +64,14 @@ This fork runs all services in a single container, mainly so that it runs proper
 	      run-opts 2 "-v $(APP_DATA)/sources.conf:/tmp/sources.conf:ro"
 	      run-opts 3 "-u 0 --entrypoint '/bin/bash /app/entrypoint.sh'"
 	     app-resource profile custom
-	      cpu 512
-	      memory 192
+	      cpu 768
+	      memory 256
 	      persist-disk 4096
 	      vcpu 2
 	    end
 ```
 
-  Note: only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management on the back of the switch)
+  **Note:** only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management on the back of the switch)
 ## Tested with:
 - FortiGate 100D and 60F
 - Cisco 9800-CL Wireless controller
