@@ -4,6 +4,7 @@ services:
 
   samplicator-nfdump:
     build: nfdump-nfsen-ng
+    network_mode: bridge
     environment:
     - INTERESTING_PORTS="22, 80, 53, 443"
     - MIRROR_PORT_OFFSET=100

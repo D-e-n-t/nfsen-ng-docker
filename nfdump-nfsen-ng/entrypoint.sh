@@ -3,29 +3,34 @@
 if [[ -n ${MIRROR_PORT_OFFSET} ]]; then MIRROR_PORT_OFFSET=100; fi
 # avoid process container restart when updating sources.conf
 cp /tmp/sources.conf /tmp/sources.set
+
 # read source.set and start a background [sn]fcap process for each source
 cat /tmp/sources.set | while read ln; do
     command=""
-    # read -r host port protocol <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1)}')
     read -r host port protocol mdest mport <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1) " " $4 " " $5}')
     if [[ -n $mdest ]]; then
+        # if we're mirroring the traffic, run smaplicate and nfcapd can listen on localhost interface (at a differnet port)
         listenport=$port
         port=$(($listenport + $MIRROR_PORT_OFFSET))
-        mcommand="samplicate -s 0.0.0.0 -p $listenport -S -d 0 127.0.0.1/$port $mdest/$mport"
-        else unset mcommand
+        mcommand="samplicate -s 0.0.0.0 -p $listenport -f -S -d 0 127.0.0.1/$port $mdest/$mport"
+        bind="-b 127.0.0.1"
+        else unset mcommand bind
     fi
-    mkdir -p /data/live/$host && command="${protocol}fcapd -I $host -w /data/live/$host -S 1 -T all -p $port -e -z" && \
+    #mkdir -p /data/live/$host && command="${protocol}fcapd -I $host -w /data/live/$host -S 1 -T all -p $port -e -z" && \
+    # Create the data directory (if required) and change ownership
+    mkdir -p /data/live/$host && chown nobody:nogroup -R /data/live/$host && \
+            command="${protocol}fcapd -u nobody -g nogroup -I $host $bind -w /data/live/$host -S 1 -p $port -e -z -D" 
     if [ -z "$command" ]; then 
         echo >&2 "Error creating directory /data/live/$host"
         exit 1
     else
         if [[ -n $mcommand ]]; then 
-            echo '$' $mcommand; 
-           $mcommand &
+           echo '$' $mcommand; 
+           $mcommand
         fi
         echo '$' $command
-        $command &
-        sleep 0.1
+        $command
+        sleep 0.1 # not sure this is needed anymore
     fi
     if [ $? -ne 0 ]; then 
         echo >&2 "Startup interrupted !"
@@ -52,11 +57,9 @@ echo "Startup completed.  Entering WatchDog loop"
 while true; do
     sleep 60; 
     cat /tmp/sources.set | while read ln; do
-        # read -r host port protocol <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1)}')
         read -r host port protocol mdest mport <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1) " " $4 " " $5}')
         if [[ -n $mdest ]]; then
             ps aux| grep '\s'"samplicate -s 0.0.0.0 -p $port"'\s' > /dev/null || { echo >&2 "Missing samplicate process for $host (port $port)"; exit 1; }
-            # ps aux| grep '\s'"samplicate -s 0.0.0.0 -p $port"'\s' > /dev/null || { echo >&2 "Missing samplicate process for $host (port $port)"; }
         fi 
         ps aux| grep '\s'$host'\s' > /dev/null || { echo >&2 "Missing collector process for $host (port $port)"; exit 1; }
     done

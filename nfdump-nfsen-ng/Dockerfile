@@ -19,10 +19,8 @@ RUN sed -e '/<Directory \/var\/www\/>/,/<\/Directory>/s/AllowOverride None/Allow
 RUN git clone https://github.com/mbolli/nfsen-ng.git .
 
 COPY settings.php backend/settings/settings.tmpl
-# COPY entrypoint.sh /tmp/
 
 RUN chown -R www-data:www-data .
-# RUN chmod +x backend/cli.php /tmp/entrypoint.sh
 RUN chmod +x backend/cli.php
 
 ENV PROFILES_DATA_PATH  /data
@@ -55,7 +53,6 @@ RUN git config --global http.sslVerify false && \
     cd .. 
 COPY entrypoint.sh .
 RUN chmod a+x /app/entrypoint.sh
-# ENTRYPOINT [ "/tmp/entrypoint.sh" ]
 
 ENTRYPOINT [ "/bin/bash", "/app/entrypoint.sh" ]
 

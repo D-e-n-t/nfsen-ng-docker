@@ -8,6 +8,7 @@ This fork runs all services in a single container, mainly so that it runs proper
 
 1. git pull https://github.com/D-e-n-t/nfsen-ng-docker.git
 2. verify ports, environment variables and paths in docker-compose.yaml
+3. run ```docker-compose build``` to build the container
 
 ## Installation on the Cisco 9300 platform (DNA Advantage license required)
 **Notes:** the Cisco 9300 switches use host networking and will ignore ports.  
@@ -37,7 +38,7 @@ This fork runs all services in a single container, mainly so that it runs proper
   
   **Notes**:  By default, nfsen-ng will track ports _22, 80, 53 and 443_.  To change this, modify the **INTERESTING_PORTS** environment variable.  
   By default, Samplicator will use the incoming port from sample.conf and nfdump will increment the port by _100_ and listen locally for the replicated feed.  If you could exceed 100 sources, increase the environment variable **MIRROR_PORT_OFFSET** to a higher value  
-  Both nfdump and Samplicated run as root.  This may present a security risk.  
+  Both ~~nfdump and~~ Samplicated run as root.  This may present a security risk.  
   Additonally, you may add/remove lines in sources.conf... you need then to restart the stack by issuing 'docker-compose restart'  
 
 ## Usage on a Cisco 9300 Switch
@@ -72,13 +73,26 @@ This fork runs all services in a single container, mainly so that it runs proper
 ```
 
   **Note:** only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management on the back of the switch)
+
 ## Tested with:
+
 - FortiGate 100D and 60F
 - Cisco 9800-CL Wireless controller
 - Cisco 3925 Router
 - Cisco 1921 Router
-- Cisco 9300 Switches (running IOS-XE 17.9.4a)
+- Cisco 9300 Switches (running in container on IOS-XE 17.9.4a)
 - Cisco ASA 5525 Firewall
+
+## Todo:
+
+- remove Samplicator (the latest version of nfcapd/sfcapd seems to be able to so the same thing)
+- ~~run nfdump as non-root user~~ done!
+- run nfsen as non-root user - maybe even have the file processor spawned by xfcapd after each capture file is written
+- update sources.conf format (maybe replaces with nfdump.conf if settings.php can be derived)
+- allow for multiple repeater destinations
+- start tracking Apache and NFSen background process 
+- start using pid files to track run state (as restart as needed)
+- fork a version with original NFSen (as it seems to be more up to date)
 
 ## An issue ?
 
