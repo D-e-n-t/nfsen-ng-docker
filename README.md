@@ -72,7 +72,19 @@ This fork runs all services in a single container, mainly so that it runs proper
 	    end
 ```
 
-  **Note:** only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management on the back of the switch)
+  **Note:** only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management port on the back of the switch)
+
+  Additions Config Options:
+```
+  ! add an apache configuration file for another site (i.e. SSL site)
+  run-opts 4 "-e APACHE_SITE=/data/default-ssl.conf -v $(APP_DATA)/apache-site.conf:/data/default-ssl.conf"
+  ! bind a directory for SSL certificates to live
+  run-opts 5 "-v $(APP_DATA)/ssl:/etc/apache2/ssl"
+  ! enable apache's mod_proxy
+  run-opts 6 "-e APACHE_PROXY=enable"
+  ! add some entries to the hosts file
+  run-opts 7 "-v $(APP_DATA)/hosts.add:/tmp/hosts.add"
+```
 
 ## Tested with:
 
@@ -85,13 +97,13 @@ This fork runs all services in a single container, mainly so that it runs proper
 
 ## Todo:
 
-- remove Samplicator (the latest version of nfcapd/sfcapd seems to be able to so the same thing)
+- remove Samplicator (the latest version of nfcapd/sfcapd seems to be able to do the same thing)
 - ~~run nfdump as non-root user~~ done!
-- run nfsen as non-root user - maybe even have the file processor spawned by xfcapd after each capture file is written
+- run nfsen as non-root user - maybe even have the file processor spawned by [ns]fcapd after each capture file is written
 - update sources.conf format (maybe replaces with nfdump.conf if settings.php can be derived)
 - allow for multiple repeater destinations
 - start tracking Apache and NFSen background process 
-- start using pid files to track run state (as restart as needed)
+- start using pid files to track run state (and restart as needed)
 - fork a version with original NFSen (as it seems to be more up to date)
 
 ## An issue ?

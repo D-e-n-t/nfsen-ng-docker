@@ -6,7 +6,7 @@ services:
     build: nfdump-nfsen-ng
     network_mode: bridge
     environment:
-    - INTERESTING_PORTS="22, 80, 53, 443"
+    - INTERESTING_PORTS=22,80,53,443
     - MIRROR_PORT_OFFSET=100
     ports:
     - 81:80

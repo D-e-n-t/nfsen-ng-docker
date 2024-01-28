@@ -1,6 +1,32 @@
 #!/bin/bash
 
+# Initial Setup
 if [[ -n ${MIRROR_PORT_OFFSET} ]]; then MIRROR_PORT_OFFSET=100; fi
+if [[ -f ${APACHE_SITE} ]]; then
+    # Enable additional site from file (bind a file and specify the container mount point in the environment variable)
+    cd /etc/apache2/sites-enabled && ln -s ${APACHE_SITE}
+    if [[ -n ${APACHE_PROXY} ]]; then
+        # Enable Apache mod_proxy
+        cd /etc/apache2/mods-enabled && ln -s ../mods-available/proxy.conf && \
+                ln -s ../mods-available/proxy.load && ln -s ../mods-available/proxy_http.load
+    fi
+    if [[ -n ${APACHE_SSL} ]]; then
+        # Enable Apache mod_ssl if this environment variable is set
+        cd /etc/apache2/mods-enabled && ln -s ../mods-available/ssl.conf && \
+                ln -s ../mods-available/ssl.load && ln -s ../mods-available/socache_shmcb.load
+    fi
+    cd /app
+fi
+if [[ -L /var/www/html/backend/datasources/data && -d /var/www/html/backend/datasources/data ]]; then
+    # previously, interesting port data was stored in the container, but this caused temporary issues after a restart
+    echo "Port data has already been migrated."
+else
+    # we move the port data to a location in the persistent data store
+    mv /var/www/html/backend/datasources/data /data/port-data && ln -s /data/port-data /var/www/html/backend/datasources/data 
+    echo "Port data migrated."
+fi
+
+
 # avoid process container restart when updating sources.conf
 cp /tmp/sources.conf /tmp/sources.set
 
