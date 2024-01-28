@@ -74,12 +74,12 @@ This fork runs all services in a single container, mainly so that it runs proper
 
   **Note:** only one of the app-vnic sections should be used (depending if the container IP should be attached to a VLAN on the data plane, or on the management port on the back of the switch)
 
-  Additions Config Options:
+  Additional Config Options:
 ```
   ! add an apache configuration file for another site (i.e. SSL site)
   run-opts 4 "-e APACHE_SITE=/data/default-ssl.conf -v $(APP_DATA)/apache-site.conf:/data/default-ssl.conf"
-  ! bind a directory for SSL certificates to live
-  run-opts 5 "-v $(APP_DATA)/ssl:/etc/apache2/ssl"
+  ! bind a directory for SSL certificates to live and Enable mod_ssl
+  run-opts 5 "-v $(APP_DATA)/ssl:/etc/apache2/ssl -e APACHE_SSL=enable"
   ! enable apache's mod_proxy
   run-opts 6 "-e APACHE_PROXY=enable"
   ! add some entries to the hosts file
