@@ -35,14 +35,14 @@ cat /tmp/sources.set | while read ln; do
     command=""
     read -r host port protocol mdest mport <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1) " " $4 " " $5}')
     if [[ -n $mdest ]]; then
-        # if we're mirroring the traffic, run smaplicate and nfcapd can listen on localhost interface (at a differnet port)
+        # If we're mirroring the traffic, run samplicate and nfcapd can listen on localhost interface (at a differnet port)
         listenport=$port
         port=$(($listenport + $MIRROR_PORT_OFFSET))
         mcommand="samplicate -s 0.0.0.0 -p $listenport -f -S -d 0 127.0.0.1/$port $mdest/$mport"
         bind="-b 127.0.0.1"
         else unset mcommand bind
     fi
-    #mkdir -p /data/live/$host && command="${protocol}fcapd -I $host -w /data/live/$host -S 1 -T all -p $port -e -z" && \
+
     # Create the data directory (if required) and change ownership
     mkdir -p /data/live/$host && chown nobody:nogroup -R /data/live/$host && \
             command="${protocol}fcapd -u nobody -g nogroup -I $host $bind -w /data/live/$host -S 1 -p $port -e -z -D" 
@@ -50,10 +50,13 @@ cat /tmp/sources.set | while read ln; do
         echo >&2 "Error creating directory /data/live/$host"
         exit 1
     else
+	# All good, let's do it then
         if [[ -n $mcommand ]]; then 
+           # Run the mirror command
            echo '$' $mcommand; 
            $mcommand
         fi
+        # Run the capture command
         echo '$' $command
         $command
         sleep 0.1 # not sure this is needed anymore
@@ -68,12 +71,14 @@ echo "NFDump and Samplecate Running, starting Apache..."
 
 sources=`cat /tmp/sources.conf | sed -re "s/^([^;]*);.*$/'\1',/" | tr '\n' ' ' `
 if [[ -n ${INTERESTING_PORTS} ]]; then
+        # It might be a good ideal to check Interesting Ports here.  Should be comma separated integers, strings (quotes) break everything.
 	sed -e "s/80, 22, 53, 443/${INTERESTING_PORTS}/" /var/www/html/backend/settings/settings.tmpl | \
         sed -e "s/'router',/$sources/" > /var/www/html/backend/settings/settings.php
     else
         sed -e "s/'router',/$sources/" /var/www/html/backend/settings/settings.tmpl > /var/www/html/backend/settings/settings.php
 fi
 if php -f /var/www/html/backend/settings/settings.php; then
+    # Startup the background listner and Apache
     /var/www/html/backend/cli.php start
     /usr/sbin/apachectl start
 fi
