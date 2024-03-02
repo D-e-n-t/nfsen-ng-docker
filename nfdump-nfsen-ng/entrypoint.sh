@@ -26,7 +26,9 @@ if [[ -L /var/www/html/backend/datasources/data && -d /var/www/html/backend/data
     # previously, interesting port data was stored in the container, but this caused temporary issues after a restart
     echo "Port data has already been migrated."
 else
-    # we move the port data to a location in the persistent data store
+    # If there's a link and it's broken, get rid of it.
+    if [[ -L /var/www/html/backend/datasources/data ]]; then rm /var/www/html/backend/datasources/data; fi
+    # Now we move the port data to a location in the persistent data store
     mv /var/www/html/backend/datasources/data /data/port-data && ln -s /data/port-data /var/www/html/backend/datasources/data 
     echo "Port data migrated."
 fi

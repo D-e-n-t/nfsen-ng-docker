@@ -1,6 +1,6 @@
 FROM php:8.1-apache-bookworm
 
-MAINTAINER Konrad Roziewski <kroziewski@gmail.com>
+MAINTAINER Daniel Tarbuck  <tarbuck@futurewest.ca>
 
 WORKDIR /var/www/html
 
@@ -22,6 +22,9 @@ COPY settings.php backend/settings/settings.tmpl
 
 RUN chown -R www-data:www-data .
 RUN chmod +x backend/cli.php
+
+WORKDIR /var/www/html/backend/datasources
+RUN ln -s /data/port-data data
 
 ENV PROFILES_DATA_PATH  /data
 ENV APACHE_RUN_USER     www-data
