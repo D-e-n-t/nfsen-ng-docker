@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Local Pre-Setup Script
+if [ -x /data/local-setup.sh ]; then
+  /data/local-setup.sh
+fi
+
 # Initial Setup
 if [[ -n ${MIRROR_PORT_OFFSET} ]]; then MIRROR_PORT_OFFSET=100; fi
 if [[ -f ${APACHE_SITE} ]]; then
