@@ -41,7 +41,7 @@ ENV APACHE_LOCK_DIR     /var/lock/apache2
 ENV APACHE_LOG_DIR      /var/log/apache2
 ENV MIRROR_PORT_OFFSET	100
 ENV INTERESTING_PORTS	22,80,53,443
-ENV ENV PHP_INI_DIR=/usr/local/etc/php
+ENV PHP_INI_DIR		/usr/local/etc/php
 
 
 #ENV PHPIZE_DEPS=$'autoconf \t\tdpkg-dev \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkg-config \t\tre2c'
