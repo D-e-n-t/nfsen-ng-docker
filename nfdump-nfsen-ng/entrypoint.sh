@@ -105,7 +105,7 @@ if [[ -n ${INTERESTING_PORTS} ]]; then
         sed -e "s/'router',/$sources/" /var/www/html/backend/settings/settings.tmpl > /var/www/html/backend/settings/settings.php
 fi
 
-cat /var/www/html/backend/settings/settings.php
+cat /var/www/html/backend/cli.php
 
 if php -f /var/www/html/backend/settings/settings.php; then
     # Startup the background listner and Apache
@@ -113,9 +113,12 @@ if php -f /var/www/html/backend/settings/settings.php; then
     /usr/sbin/apachectl start
 fi
 
+ps -ef 
+
 echo "Startup completed.  Entering WatchDog loop"
 
 while true; do
+    ehco "True"
     sleep 60; 
     cat /tmp/sources.set | while read ln; do
         read -r host port protocol mdest mport <<< $(echo $ln | awk -F ';' '{print $1 " " $2 " " substr($3,1,1) " " $4 " " $5}')

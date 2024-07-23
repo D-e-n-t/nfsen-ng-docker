@@ -4,7 +4,7 @@ WORKDIR /var/www/html
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends --no-install-suggests \
-         apt-utils pkg-config nfdump rrdtool librrd-dev git nfdump-sflow procps net-tools vim-tiny autotools-dev automake \
+         apt-utils pkg-config nfdump rrdtool librrd-dev git nfdump-sflow procps net-tools vim-tiny autotools-dev automake libtool autoconf pkgconf nasm \
     && apt-get clean -y
 
 RUN a2enmod rewrite deflate headers expires
