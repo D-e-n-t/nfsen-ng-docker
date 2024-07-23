@@ -8,8 +8,20 @@ fi
 # Debug if the environment variable is set
 if ! [[ -z ${CTX-DEBUG} ]]; then
   set
-  php-config
-  tree
+  echo -n "Include Dir:"
+  php-config --include-dir 
+  echo -n "Includes:"
+  php-config --includes
+  echo -n "Libs:"
+  php-config --libs
+  echo -n "Ext Dir:"
+  php-config --extension-dir 
+  echo -n "INI Dir:"
+  php-config --ini-dir 
+  echo -n "INI Path:"
+  php-config --ini-path
+  
+#  tree
 fi
 
 # Initial Setup
@@ -92,6 +104,9 @@ if [[ -n ${INTERESTING_PORTS} ]]; then
     else
         sed -e "s/'router',/$sources/" /var/www/html/backend/settings/settings.tmpl > /var/www/html/backend/settings/settings.php
 fi
+
+cat /var/www/html/backend/settings/settings.php
+
 if php -f /var/www/html/backend/settings/settings.php; then
     # Startup the background listner and Apache
     /var/www/html/backend/cli.php start
