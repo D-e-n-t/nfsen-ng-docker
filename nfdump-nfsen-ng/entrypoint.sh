@@ -27,7 +27,7 @@ if [[ -L /var/www/html/backend/datasources/data && -d /var/www/html/backend/data
     echo "Port data has already been migrated."
 else
     # If there's a link and it's broken, get rid of it.
-    if [[ -L /var/www/html/backend/datasources/data ]]; then rm /var/www/html/backend/datasources/data; fi
+    if [[ -L /var/www/html/backend/datasources/data ]]; then rm /var/www/html/backend/datasources/data; mkdir /var/www/html/backend/datasources/data; fi
     # Now we move the port data to a location in the persistent data store
     mv /var/www/html/backend/datasources/data /data/port-data && ln -s /data/port-data /var/www/html/backend/datasources/data 
     echo "Port data migrated."
@@ -35,6 +35,7 @@ fi
 
 
 # avoid process container restart when updating sources.conf
+if [[ ! -f /tmp/sources.conf ]]; then echo "router1;9000;nflow" > /tmp/sources.conf; fi
 cp /tmp/sources.conf /tmp/sources.set
 
 # read source.set and start a background [sn]fcap process for each source
