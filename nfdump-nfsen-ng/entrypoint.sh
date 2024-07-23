@@ -5,6 +5,13 @@ if [ -x /data/local-setup.sh ]; then
   /data/local-setup.sh
 fi
 
+# Debug if the environment variable is set
+if ! [[ -z ${CTX-DEBUG} ]]; then
+  set
+  php-config
+  tree
+fi
+
 # Initial Setup
 if [[ -n ${MIRROR_PORT_OFFSET} ]]; then MIRROR_PORT_OFFSET=100; fi
 if [[ -f ${APACHE_SITE} ]]; then
