@@ -1,12 +1,10 @@
 FROM php:8.1-apache-bookworm
 
-MAINTAINER Daniel Tarbuck  <tarbuck@futurewest.ca>
-
 WORKDIR /var/www/html
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends --no-install-suggests \
-         pkg-config nfdump rrdtool librrd-dev git nfdump-sflow procps net-tools vim-tiny autotools-dev automake \
+         apt-utils pkg-config nfdump rrdtool librrd-dev git nfdump-sflow procps net-tools vim-tiny autotools-dev automake \
     && apt-get clean -y
 
 RUN a2enmod rewrite deflate headers expires
@@ -44,20 +42,7 @@ ENV INTERESTING_PORTS	22,80,53,443
 ENV PHP_INI_DIR		/usr/local/etc/php
 
 
-#ENV PHPIZE_DEPS=$'autoconf \t\tdpkg-dev \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkg-config \t\tre2c'
-#ENV PHP_ASC_URL=https://www.php.net/distributions/php-8.1.27.tar.xz.asc
-#ENV PHP_CFLAGS='-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'
-#ENV PHP_CPPFLAGS='-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'
-#ENV PHP_LDFLAGS='-Wl,-O1 -pie'
-#ENV PHP_SHA256=479e65c3f05714d4aace1370e617d78e49e996ec7a7579a5be47535be61f0658
-#ENV PHP_URL=https://www.php.net/distributions/php-8.1.27.tar.xz
-
-#EUID=0
-#GPG_KEYS='528995BFEDFBA7191D46839EF9BA0ADA31CBD89E 39B641343D8C104B2B146DC3F9C39DC0B9698544 F1F692238FBC1666E5A5CCD4199F9DFEF6FFBAFD'
-#OPTERR=1
-#OPTIND=1
 #PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-#PHP_VERSION=8.1.27
 
 
 VOLUME [ "/data" ]
